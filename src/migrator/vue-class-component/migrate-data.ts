@@ -106,6 +106,10 @@ export default (clazz: ClassDeclaration, mainObject: ObjectLiteralExpression) =>
     const { dataMethod, returnObject } = getDataMethod(clazz, mainObject);
     classPropertyData.forEach((propertyData) => {
       const typeNode = propertyData.getTypeNode()?.getText();
+      if (propertyData.hasDeclareKeyword()
+        || !propertyData.getInitializer()) {
+        return;
+      }
       if (typeNode) {
         dataMethod.insertVariableStatement(0, {
           declarationKind: VariableDeclarationKind.Const,
