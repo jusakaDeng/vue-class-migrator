@@ -9,23 +9,19 @@
 
 Vue Class Migrator is a utility designed to facilitate the migration of Vue and TypeScript files using the `@component` decorator from `vue-class-components` to the `defineComponent` format. Under the hood, it employs `ts-morph` for parsing and generating files.
 
-### Installation
-
-You can install vue-class-migrator globally using npm:
-
-```sh
-npm install -g vue-class-migrator
-```
 
 ### How to use the tool
+
+```
+git clone https://github.com/jusakaDeng/vue-class-migrator
+cd vue-class-migrator && npm install
+npm run migrate -- -d <your_path>
+```
 
 Accepted options
 - -d: Specifies the directory you want to migrate.
 - --sfc: (Optional flag, default: false) Removes original TS and style files, generating a final Vue Single File Component (SFC).
 
-```
-npm run migrate -- -d <your_path>
-```
 
 ### Considerations
 
