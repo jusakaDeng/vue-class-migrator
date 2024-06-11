@@ -17,7 +17,7 @@ export const injectScript = (tsSourceFile: SourceFile, vueTemplate: string): str
 
   return vueTemplate.replace(
     scriptTag[0],
-    `<script lang="ts">\n${tsSourceFile.getText()}\n</script>`,
+    () => `<script lang="ts">\n${tsSourceFile.getText()}\n</script>`,
   );
 };
 
