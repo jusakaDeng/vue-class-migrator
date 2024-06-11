@@ -1,8 +1,13 @@
 import { ClassDeclaration, ObjectLiteralExpression } from 'ts-morph';
 import { getObjectProperty } from '../utils';
 import { vueSpecialMethods } from '../config';
+import logger from '../logger';
 
-export default (clazz: ClassDeclaration, mainObject: ObjectLiteralExpression) => {
+export default (
+  clazz: ClassDeclaration,
+  mainObject: ObjectLiteralExpression,
+  sourceFileName: string,
+) => {
   vueSpecialMethods
     .filter((m) => clazz.getMethod(m))
     .forEach((m) => {
@@ -34,6 +39,10 @@ export default (clazz: ClassDeclaration, mainObject: ObjectLiteralExpression) =>
       const [firstDecorator] = method.getDecorators() || [];
       if (firstDecorator && !reservedDecorators.includes(firstDecorator.getName())) {
         throw new Error(`The method ${method.getName()} has non supported decorators.`);
+      }
+
+      if (firstDecorator && reservedDecorators.includes(firstDecorator.getName())) {
+        logger.warn(`Migrating ${sourceFileName}, unhandle decorator ${firstDecorator.getName()}`);
       }
 
       const typeNode = method.getReturnTypeNode()?.getText();

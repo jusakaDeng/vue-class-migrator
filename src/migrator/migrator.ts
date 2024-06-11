@@ -19,7 +19,7 @@ const migrateTsFile = async (project: Project, sourceFile: SourceFile): Promise<
   try {
     const migrationManager = createMigrationManager(sourceFile, outFile);
 
-    migrateVueClassComponent(migrationManager);
+    migrateVueClassComponent(migrationManager, sourceFile);
     migrateVueClassProperties(migrationManager);
     migrateVuexDecorators(migrationManager);
   } catch (error) {
