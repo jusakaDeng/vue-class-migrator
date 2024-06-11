@@ -17,6 +17,7 @@ export const vueSpecialMethods = [
   'deactivated',
   'serverPrefetch',
   'destroyed',
+  'asyncData',
 ]; // Vue methods that won't be included under methods: {...}, they go to the root.
 
 export const supportedDecorators = [
