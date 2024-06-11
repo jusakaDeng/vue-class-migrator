@@ -10,6 +10,7 @@ export default (clazz: ClassDeclaration, mainObject: ObjectLiteralExpression) =>
       const typeNode = method.getReturnTypeNode()?.getText();
       mainObject.addMethod({
         name: method.getName(),
+        parameters: method.getParameters().map((p) => p.getStructure()),
         isAsync: method.isAsync(),
         returnType: typeNode,
         statements: method.getBodyText(),
@@ -24,21 +25,26 @@ export default (clazz: ClassDeclaration, mainObject: ObjectLiteralExpression) =>
         && !m.getDecorator('Watch'),
     );
 
+  const reservedDecorators = ['prePermissionCheck'];
+
   if (methods.length) {
     const methodsObject = getObjectProperty(mainObject, 'methods');
 
     methods.forEach((method) => {
-      if (method.getDecorators().length) {
+      const [firstDecorator] = method.getDecorators() || [];
+      if (firstDecorator && !reservedDecorators.includes(firstDecorator.getName())) {
         throw new Error(`The method ${method.getName()} has non supported decorators.`);
       }
 
       const typeNode = method.getReturnTypeNode()?.getText();
+
       methodsObject.addMethod({
         name: method.getName(),
         parameters: method.getParameters().map((p) => p.getStructure()),
         isAsync: method.isAsync(),
         returnType: typeNode,
         statements: method.getBodyText(),
+        leadingTrivia: firstDecorator ? `/* ${firstDecorator.getText()} */\n` : undefined,
       });
     });
   }
